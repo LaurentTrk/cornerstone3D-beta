@@ -34,7 +34,7 @@ async function init(defaultConfiguration = {}): Promise<boolean> {
   if (csRenderInitialized) {
     return csRenderInitialized;
   }
-
+  console.log('Cornerstone Avicenna Version 0.26.0.2');
   // detectGPU
   const hasWebGLContext = hasActiveWebGLContext();
   if (!hasWebGLContext) {

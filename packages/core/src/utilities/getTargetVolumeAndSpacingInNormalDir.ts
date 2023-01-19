@@ -72,11 +72,12 @@ export default function getTargetVolumeAndSpacingInNormalDir(
     const imageVolume = imageVolumes[imageVolumeIndex];
     const { uid: actorUID } = volumeActors[imageVolumeIndex];
 
-    const spacingInNormalDirection = getSpacingInNormal(
-      imageVolume,
-      viewPlaneNormal,
-      viewport
-    );
+    const spacingInNormalDirection = imageVolume
+      ? getSpacingInNormal(
+        imageVolume,
+        viewPlaneNormal,
+        viewport
+      ): undefined;
 
     return { imageVolume, spacingInNormalDirection, actorUID };
   }
@@ -106,16 +107,18 @@ export default function getTargetVolumeAndSpacingInNormalDir(
       continue;
     }
 
-    const spacingInNormalDirection = getSpacingInNormal(
+    const spacingInNormalDirection = imageVolume
+    ? getSpacingInNormal(
       imageVolume,
       viewPlaneNormal,
       viewport
-    );
+    ) : undefined;
 
     // Allow for EPSILON part larger requirement to prefer earlier volumes
     // when the spacing is within a factor of EPSILON.  Use a factor because
     // that deals with very small or very large volumes effectively.
     if (
+      spacingInNormalDirection &&
       spacingInNormalDirection * EPSILON_PART <
       smallest.spacingInNormalDirection
     ) {

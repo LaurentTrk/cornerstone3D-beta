@@ -15,10 +15,12 @@ function getSvgDrawingHelper(element: HTMLDivElement): SVGDrawingHelper {
   const canvasHash = `${viewportId}:${renderingEngineId}`;
   const svgLayerElement = _getSvgLayer(element);
 
-  // Reset touched
-  Object.keys(state.svgNodeCache[canvasHash]).forEach((cacheKey) => {
-    state.svgNodeCache[canvasHash][cacheKey].touched = false;
-  });
+  if (canvasHash in state.svgNodeCache) {
+    // Reset touched
+    Object.keys(state.svgNodeCache[canvasHash]).forEach((cacheKey) => {
+      state.svgNodeCache[canvasHash][cacheKey].touched = false;
+    });
+  }
 
   return {
     svgLayerElement: svgLayerElement,

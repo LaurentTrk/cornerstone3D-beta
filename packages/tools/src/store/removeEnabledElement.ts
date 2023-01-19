@@ -71,23 +71,27 @@ function removeEnabledElement(
 
 const _removeViewportFromSynchronizers = (element: HTMLDivElement) => {
   const enabledElement = getEnabledElement(element);
-
-  const synchronizers = getSynchronizersForViewport(
-    enabledElement.viewportId,
-    enabledElement.renderingEngineId
-  );
-  synchronizers.forEach((sync) => {
-    sync.remove(enabledElement);
-  });
+  if (enabledElement) {
+    const synchronizers = getSynchronizersForViewport(
+      enabledElement.viewportId,
+      enabledElement.renderingEngineId
+    );
+    synchronizers.forEach((sync) => {
+      sync.remove(enabledElement);
+    });
+  }
 };
 
 const _removeViewportFromToolGroup = (element: HTMLDivElement) => {
-  const { renderingEngineId, viewportId } = getEnabledElement(element);
+  const enabledElement = getEnabledElement(element);
+  if (enabledElement) {
+    const { renderingEngineId, viewportId } = enabledElement;
 
-  const toolGroup = getToolGroupForViewport(viewportId, renderingEngineId);
+    const toolGroup = getToolGroupForViewport(viewportId, renderingEngineId);
 
-  if (toolGroup) {
-    toolGroup.removeViewports(renderingEngineId, viewportId);
+    if (toolGroup) {
+      toolGroup.removeViewports(renderingEngineId, viewportId);
+    }
   }
 };
 

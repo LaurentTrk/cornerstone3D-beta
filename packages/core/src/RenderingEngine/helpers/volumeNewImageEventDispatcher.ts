@@ -45,6 +45,11 @@ function volumeNewImageEventDispatcher(
     state[viewport.id] = 0;
   }
 
+  const imageSliceDataForVolumeViewport =
+    getImageSliceDataForVolumeViewport(viewport);
+  if (!imageSliceDataForVolumeViewport) {
+    return;
+  }
   const { numberOfSlices, imageIndex } =
     getImageSliceDataForVolumeViewport(viewport);
 

@@ -128,21 +128,25 @@ class Cache implements ICache {
     const cachedVolume = this._volumeCache.get(volumeId);
     const { volumeLoadObject, volume } = cachedVolume;
 
-    if (volume.cancelLoading) {
-      volume.cancelLoading();
+    if (volume) {
+      if (volume.cancelLoading) {
+        volume.cancelLoading();
+      }
+
+      if (volume.imageData) {
+        volume.imageData = null;
+      }
     }
 
-    if (volume.imageData) {
-      volume.imageData = null;
-    }
+    if (volumeLoadObject) {
+      if (volumeLoadObject.cancelFn) {
+        // Cancel any in-progress loading
+        volumeLoadObject.cancelFn();
+      }
 
-    if (volumeLoadObject.cancelFn) {
-      // Cancel any in-progress loading
-      volumeLoadObject.cancelFn();
-    }
-
-    if (volumeLoadObject.decache) {
-      volumeLoadObject.decache();
+      if (volumeLoadObject.decache) {
+        volumeLoadObject.decache();
+      }
     }
 
     this._volumeCache.delete(volumeId);

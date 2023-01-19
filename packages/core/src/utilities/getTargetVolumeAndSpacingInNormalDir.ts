@@ -47,10 +47,9 @@ export default function getTargetVolumeAndSpacingInNormalDir(
       (iv) => iv.volumeId === targetVolumeId
     );
 
-    const spacingInNormalDirection = getSpacingInNormalDirection(
-      imageVolume,
-      viewPlaneNormal
-    );
+    const spacingInNormalDirection = imageVolume
+      ? getSpacingInNormalDirection(imageVolume, viewPlaneNormal)
+      : undefined;
 
     return { imageVolume, spacingInNormalDirection };
   }
@@ -64,12 +63,14 @@ export default function getTargetVolumeAndSpacingInNormalDir(
   for (let i = 0; i < numVolumeActors; i++) {
     const imageVolume = imageVolumes[i];
 
-    const spacingInNormalDirection = getSpacingInNormalDirection(
-      imageVolume,
-      viewPlaneNormal
-    );
+    const spacingInNormalDirection = imageVolume
+      ? getSpacingInNormalDirection(imageVolume, viewPlaneNormal)
+      : undefined;
 
-    if (spacingInNormalDirection < smallest.spacingInNormalDirection) {
+    if (
+      spacingInNormalDirection &&
+      spacingInNormalDirection < smallest.spacingInNormalDirection
+    ) {
       smallest.spacingInNormalDirection = spacingInNormalDirection;
       smallest.imageVolume = imageVolume;
     }

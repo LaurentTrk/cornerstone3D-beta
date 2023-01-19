@@ -27,7 +27,7 @@ export function init(defaultConfiguration = {}): void {
   if (csToolsInitialized) {
     return;
   }
-
+  console.log('Cornerstone Tools Avicenna Version 0.36.0.1');
   _addCornerstoneEventListeners();
   _addCornerstoneToolsEventListeners();
 

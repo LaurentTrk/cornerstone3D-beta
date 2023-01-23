@@ -140,12 +140,17 @@ function _createTextElement(
   svgDrawingHelper: SVGDrawingHelper,
   options: any
 ): SVGElement {
-  const { color, fontFamily, fontSize } = options;
+  const { color, fontFamily, fontSize, shadow } = Object.assign(
+    {
+      shadow: undefined,
+    },
+    options
+  );
   const svgns = 'http://www.w3.org/2000/svg';
   const textElement = document.createElementNS(svgns, 'text');
   const noSelectStyle =
     'user-select: none; pointer-events: none; -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);';
-  const dropShadowStyle = `filter:url(#shadow-${svgDrawingHelper.svgLayerElement.id});`;
+  const dropShadowStyle = shadow ? `filter:url(#shadow-${svgDrawingHelper.svgLayerElement.id});` : '';
   const combinedStyle = `${noSelectStyle}${dropShadowStyle}`;
 
   // font-size="100"

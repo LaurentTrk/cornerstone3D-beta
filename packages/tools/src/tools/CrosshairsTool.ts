@@ -1193,6 +1193,7 @@ class CrosshairsTool extends AnnotationTool {
         const rotHandlesActive =
           data.handles.activeOperation === OPERATION.ROTATE;
         const rotationHandles = [line[9], line[10]];
+        const canRotate =  this.configuration?.preventReorientation !== true;
 
         const rotHandleWorldOne = [
           viewport.canvasToWorld(line[9]),
@@ -1252,22 +1253,24 @@ class CrosshairsTool extends AnnotationTool {
         ) {
           // draw all handles inactive (rotation and slab thickness)
           let handleUID = `${lineIndex}One`;
-          drawHandlesSvg(
-            svgDrawingHelper,
-            annotationUID,
-            handleUID,
-            rotationHandles,
-            {
-              color,
-              handleRadius: this.configuration.mobile?.enabled
-                ? this.configuration.mobile?.handleRadius
-                : 3,
-              opacity: this.configuration.mobile?.enabled
-                ? this.configuration.mobile?.opacity
-                : 1,
-              type: 'circle',
-            }
-          );
+          if (canRotate){
+            drawHandlesSvg(
+              svgDrawingHelper,
+              annotationUID,
+              handleUID,
+              rotationHandles,
+              {
+                color,
+                handleRadius: this.configuration.mobile?.enabled
+                  ? this.configuration.mobile?.handleRadius
+                  : 3,
+                opacity: this.configuration.mobile?.enabled
+                  ? this.configuration.mobile?.opacity
+                  : 1,
+                type: 'circle',
+              }
+            );
+          }
           handleUID = `${lineIndex}Two`;
           drawHandlesSvg(
             svgDrawingHelper,
@@ -1289,10 +1292,11 @@ class CrosshairsTool extends AnnotationTool {
           lineActive &&
           !rotHandlesActive &&
           !slabThicknessHandlesActive &&
-          viewportDraggableRotatable
+          viewportDraggableRotatable &&
+          canRotate
         ) {
-          const handleUID = `${lineIndex}`;
           // draw rotation handles inactive
+          const handleUID = `${lineIndex}`;
           drawHandlesSvg(
             svgDrawingHelper,
             annotationUID,
@@ -1333,7 +1337,7 @@ class CrosshairsTool extends AnnotationTool {
               type: 'rect',
             }
           );
-        } else if (rotHandlesActive && viewportDraggableRotatable) {
+        } else if (rotHandlesActive && viewportDraggableRotatable && canRotate) {
           const handleUID = `${lineIndex}`;
           // draw all rotation handles as active
           drawHandlesSvg(
@@ -2031,7 +2035,7 @@ class CrosshairsTool extends AnnotationTool {
         viewportsAnnotationsToUpdate,
         delta
       );
-    } else if (handles.activeOperation === OPERATION.ROTATE) {
+    } else if (handles.activeOperation === OPERATION.ROTATE && this.configuration?.preventReorientation !== true) {
       // ROTATION
       const otherViewportAnnotations =
         this._getAnnotationsForViewportsWithDifferentCameras(

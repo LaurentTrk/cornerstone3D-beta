@@ -104,7 +104,7 @@ async function init(configuration = config): Promise<boolean> {
   if (csRenderInitialized) {
     return csRenderInitialized;
   }
-
+  console.log('Cornerstone Avicenna Version 0.30.0.0');
   // merge configs
   config = deepMerge(defaultConfig, configuration);
 
